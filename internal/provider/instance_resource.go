@@ -3,9 +3,14 @@ package provider
 import (
 	"context"
 	"fmt"
+	"time"
 
+	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	tfTypes "github.com/squat/terraform-provider-lambda/internal/provider/types"
@@ -44,6 +49,8 @@ type InstanceResourceModel struct {
 	Region           *tfTypes.Region       `tfsdk:"region"`
 	SSHKeyNames      []types.String        `tfsdk:"ssh_key_names"`
 	Status           types.String          `tfsdk:"status"`
+	Wait             types.Bool            `tfsdk:"wait"`
+	Timeouts         timeouts.Value        `tfsdk:"timeouts"`
 }
 
 func (r *InstanceResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -166,6 +173,14 @@ func (r *InstanceResource) Schema(ctx context.Context, req resource.SchemaReques
 				Computed:    true,
 				Description: `The current status of the instance`,
 			},
+			"wait": schema.BoolAttribute{
+				Optional:    true,
+				Description: `Whether to wait for the instance to finish booting.`,
+			},
+
+			"timeouts": timeouts.Attributes(ctx, timeouts.Opts{
+				Create: true,
+			}),
 		},
 	}
 }
@@ -209,8 +224,6 @@ func (r *InstanceResource) Create(ctx context.Context, req resource.CreateReques
 	}
 
 	request := *data.ToSharedLaunch()
-	println(data.InstanceTypeName.ValueString())
-	println(data.RegionName.ValueString())
 	res, err := r.client.LaunchInstance(ctx, request)
 	if err != nil {
 		resp.Diagnostics.AddError("failure to invoke API", err.Error())
@@ -232,38 +245,72 @@ func (r *InstanceResource) Create(ctx context.Context, req resource.CreateReques
 		return
 	}
 
-	getRequest := operations.GetInstanceRequest{
-		ID: res.Launch.Data.InstanceIds[0],
+	instance := r.getInstance(ctx, &resp.State, resp.Diagnostics, res.Launch.Data.InstanceIds[0])
+	if instance == nil {
+		return
 	}
-	getResponse, err := r.client.GetInstance(ctx, getRequest)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if getResponse != nil && getResponse.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(getResponse.RawResponse))
+
+	if data.Wait.ValueBool() {
+		createTimeout, diags := data.Timeouts.Create(ctx, 60*time.Minute)
+		resp.Diagnostics.Append(diags...)
+		if resp.Diagnostics.HasError() {
+			return
 		}
-		return
+		ctx, cancel := context.WithTimeout(ctx, createTimeout)
+		defer cancel()
+	Wait:
+		for {
+			select {
+			case <-ctx.Done():
+				break Wait
+			case <-time.After(time.Second * 30):
+				instance = r.getInstance(ctx, &resp.State, resp.Diagnostics, res.Launch.Data.InstanceIds[0])
+				if instance == nil {
+					return
+				}
+				if instance.Status == shared.StatusActive {
+					break Wait
+				}
+			}
+		}
 	}
-	if getResponse == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", getResponse))
-		return
-	}
-	if getResponse.StatusCode == 404 {
-		resp.State.RemoveResource(ctx)
-		return
-	}
-	if getResponse.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", getResponse.StatusCode), debugResponse(getResponse.RawResponse))
-		return
-	}
-	if !(getResponse.Instance != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(getResponse.RawResponse))
-		return
-	}
-	data.RefreshFromSharedInstance(&getResponse.Instance.Data)
+
+	data.RefreshFromSharedInstance(instance)
 	refreshPlan(ctx, plan, &data, resp.Diagnostics)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+}
+
+func (r *InstanceResource) getInstance(ctx context.Context, state *tfsdk.State, diag diag.Diagnostics, id string) *shared.Instance {
+	req := operations.GetInstanceRequest{
+		ID: id,
+	}
+	res, err := r.client.GetInstance(ctx, req)
+	if err != nil {
+		diag.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			diag.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
+		return nil
+	}
+	if res == nil {
+		diag.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return nil
+	}
+	if res.StatusCode == 404 {
+		state.RemoveResource(ctx)
+		return nil
+	}
+	if res.StatusCode != 200 {
+		diag.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+		return nil
+	}
+	if !(res.Instance != nil) {
+		diag.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
+		return nil
+	}
+	return &res.Instance.Data
 }
 
 func (r *InstanceResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
@@ -284,36 +331,11 @@ func (r *InstanceResource) Read(ctx context.Context, req resource.ReadRequest, r
 		return
 	}
 
-	id := data.ID.ValueString()
-
-	request := operations.GetInstanceRequest{
-		ID: id,
-	}
-	res, err := r.client.GetInstance(ctx, request)
-	if err != nil {
-		resp.Diagnostics.AddError("failure to invoke API", err.Error())
-		if res != nil && res.RawResponse != nil {
-			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
-		}
+	instance := r.getInstance(ctx, &resp.State, resp.Diagnostics, data.ID.ValueString())
+	if instance == nil {
 		return
 	}
-	if res == nil {
-		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
-		return
-	}
-	if res.StatusCode == 404 {
-		resp.State.RemoveResource(ctx)
-		return
-	}
-	if res.StatusCode != 200 {
-		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
-		return
-	}
-	if !(res.Instance != nil) {
-		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
-		return
-	}
-	data.RefreshFromSharedInstance(&res.Instance.Data)
+	data.RefreshFromSharedInstance(instance)
 
 	// Save updated data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -382,5 +404,5 @@ func (r *InstanceResource) Delete(ctx context.Context, req resource.DeleteReques
 }
 
 func (r *InstanceResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.AddError("Not Implemented", "No available import state operation is available for resource ssh_key.")
+	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }

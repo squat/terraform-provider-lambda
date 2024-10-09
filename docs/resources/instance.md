@@ -25,6 +25,8 @@ Instance Resource
 
 - `file_system_names` (List of String) Names of the file systems, if any, attached to the instance
 - `name` (String) User-provided name for the instance
+- `timeouts` (Attributes) (see [below for nested schema](#nestedatt--timeouts))
+- `wait` (Boolean) Whether to wait for the instance to finish booting.
 
 ### Read-Only
 
@@ -38,6 +40,14 @@ Instance Resource
 - `private_ip` (String) Private IPv4 address of the instance
 - `region` (Attributes) (see [below for nested schema](#nestedatt--region))
 - `status` (String) The current status of the instance
+
+<a id="nestedatt--timeouts"></a>
+### Nested Schema for `timeouts`
+
+Optional:
+
+- `create` (String) A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+
 
 <a id="nestedatt--instance_type"></a>
 ### Nested Schema for `instance_type`
