@@ -1,0 +1,42 @@
+overlay: 1.0.0
+info:
+  title: Lambda Provider Overlay
+  version: 0.0.1
+extends: ./lambda.yaml
+actions:
+  - target: $["security"][0]
+    remove: true
+  - target: $["components"]["securitySchemes"]["basicAuth"]
+    remove: true
+  - target: $["info"]["title"]
+    update: Lambda Provider
+  - target: $["components"]["schemas"]["instanceType"]
+    update:
+      x-speakeasy-entity: InstanceType
+  - target: $["paths"]["/instance-types"]["get"]
+    update:
+      x-speakeasy-entity-operation: InstanceTypes#read
+  - target: $["components"]["schemas"]["instance"]
+    update:
+      x-speakeasy-entity: Instance
+  - target: $["paths"]["/instances/{id}"]["get"]
+    update:
+      x-speakeasy-entity-operation: Instance#read
+  #  - target: $["paths"]["/instance-operations/launch"]["post"]
+  #    update:
+  #      x-speakeasy-entity-operation: Instance#create
+  #  - target: $["paths"]["/instance-operations/terminate"]["post"]
+  #    update:
+  #      x-speakeasy-entity-operation: Instance#delete
+  - target: $["components"]["schemas"]["sshKey"]
+    update:
+      x-speakeasy-entity: SSHKey
+  - target: $["paths"]["/ssh-keys"]["get"]
+    update:
+      x-speakeasy-entity-operation: SSHKey#list
+  - target: $["paths"]["/ssh-keys"]["post"]
+    update:
+      x-speakeasy-entity-operation: SSHKey#create
+  - target: $["paths"]["/ssh-keys/{id}"]["delete"]
+    update:
+      x-speakeasy-entity-operation: SSHKey#delete

@@ -1,0 +1,220 @@
+lockVersion: 2.0.0
+id: fa60d959-ce8b-4feb-9655-a9c9a712f701
+management:
+  docChecksum: f9513ec36339ee18aec3c73a66207a81
+  docVersion: 1.5.3
+  speakeasyVersion: 1.412.6
+  generationVersion: 2.436.3
+  releaseVersion: 0.1.2
+  configChecksum: 5712f46094c81c1b3fcebbb9f8d9e6f8
+features:
+  terraform:
+    additionalDependencies: 0.1.0
+    constsAndDefaults: 0.1.4
+    core: 3.25.0
+    envVarSecurityUsage: 0.1.0
+    globalSecurity: 2.81.8
+    globalServerURLs: 2.82.1
+    nullables: 0.0.0
+generatedFiles:
+  - .gitattributes
+  - CONTRIBUTING.md
+  - USAGE.md
+  - examples/README.md
+  - examples/data-sources/lambda_instance/data-source.tf
+  - examples/data-sources/lambda_instance_types/data-source.tf
+  - examples/provider/provider.tf
+  - examples/resources/lambda_ssh_key/resource.tf
+  - go.mod
+  - go.sum
+  - internal/planmodifiers/boolplanmodifier/suppress_diff.go
+  - internal/planmodifiers/float64planmodifier/suppress_diff.go
+  - internal/planmodifiers/int64planmodifier/suppress_diff.go
+  - internal/planmodifiers/listplanmodifier/suppress_diff.go
+  - internal/planmodifiers/mapplanmodifier/suppress_diff.go
+  - internal/planmodifiers/numberplanmodifier/suppress_diff.go
+  - internal/planmodifiers/objectplanmodifier/suppress_diff.go
+  - internal/planmodifiers/setplanmodifier/suppress_diff.go
+  - internal/planmodifiers/stringplanmodifier/suppress_diff.go
+  - internal/planmodifiers/utils/state_check.go
+  - internal/provider/instance_data_source.go
+  - internal/provider/instance_data_source_sdk.go
+  - internal/provider/instancetypes_data_source.go
+  - internal/provider/instancetypes_data_source_sdk.go
+  - internal/provider/provider.go
+  - internal/provider/reflect/diags.go
+  - internal/provider/reflect/doc.go
+  - internal/provider/reflect/generic_attr_value.go
+  - internal/provider/reflect/helpers.go
+  - internal/provider/reflect/interfaces.go
+  - internal/provider/reflect/into.go
+  - internal/provider/reflect/map.go
+  - internal/provider/reflect/number.go
+  - internal/provider/reflect/options.go
+  - internal/provider/reflect/outof.go
+  - internal/provider/reflect/pointer.go
+  - internal/provider/reflect/primitive.go
+  - internal/provider/reflect/slice.go
+  - internal/provider/reflect/struct.go
+  - internal/provider/sshkey_resource.go
+  - internal/provider/sshkey_resource_sdk.go
+  - internal/provider/types/data.go
+  - internal/provider/types/instance_type.go
+  - internal/provider/types/region.go
+  - internal/provider/types/specs.go
+  - internal/provider/utils.go
+  - internal/sdk/.gitattributes
+  - internal/sdk/.gitignore
+  - internal/sdk/CONTRIBUTING.md
+  - internal/sdk/internal/hooks/hooks.go
+  - internal/sdk/internal/utils/contenttype.go
+  - internal/sdk/internal/utils/form.go
+  - internal/sdk/internal/utils/headers.go
+  - internal/sdk/internal/utils/json.go
+  - internal/sdk/internal/utils/pathparams.go
+  - internal/sdk/internal/utils/queryparams.go
+  - internal/sdk/internal/utils/requestbody.go
+  - internal/sdk/internal/utils/retries.go
+  - internal/sdk/internal/utils/security.go
+  - internal/sdk/internal/utils/utils.go
+  - internal/sdk/lambda.go
+  - internal/sdk/models/errors/sdkerror.go
+  - internal/sdk/models/operations/addsshkey.go
+  - internal/sdk/models/operations/deletesshkey.go
+  - internal/sdk/models/operations/getinstance.go
+  - internal/sdk/models/operations/instancetypes.go
+  - internal/sdk/models/operations/launchinstance.go
+  - internal/sdk/models/operations/listfilesystems.go
+  - internal/sdk/models/operations/listinstances.go
+  - internal/sdk/models/operations/listsshkeys.go
+  - internal/sdk/models/operations/options.go
+  - internal/sdk/models/operations/restartinstance.go
+  - internal/sdk/models/operations/terminateinstance.go
+  - internal/sdk/models/shared/addsshkey.go
+  - internal/sdk/models/shared/error.go
+  - internal/sdk/models/shared/errorcode.go
+  - internal/sdk/models/shared/errorresponsebody.go
+  - internal/sdk/models/shared/filesystem.go
+  - internal/sdk/models/shared/filesystems.go
+  - internal/sdk/models/shared/instance.go
+  - internal/sdk/models/shared/instances.go
+  - internal/sdk/models/shared/instancetype.go
+  - internal/sdk/models/shared/instancetypes.go
+  - internal/sdk/models/shared/launch.go
+  - internal/sdk/models/shared/region.go
+  - internal/sdk/models/shared/responseaddsshkey.go
+  - internal/sdk/models/shared/responseinstance.go
+  - internal/sdk/models/shared/responselaunch.go
+  - internal/sdk/models/shared/responserestart.go
+  - internal/sdk/models/shared/responseterminate.go
+  - internal/sdk/models/shared/restart.go
+  - internal/sdk/models/shared/security.go
+  - internal/sdk/models/shared/sshkey.go
+  - internal/sdk/models/shared/sshkeys.go
+  - internal/sdk/models/shared/terminate.go
+  - internal/sdk/models/shared/user.go
+  - internal/sdk/retry/config.go
+  - internal/sdk/types/bigint.go
+  - internal/sdk/types/date.go
+  - internal/sdk/types/datetime.go
+  - internal/sdk/types/decimal.go
+  - internal/sdk/types/pointers.go
+  - internal/validators/DateValidator.go
+  - internal/validators/ExactlyOneChild.go
+  - internal/validators/JSONParseValidator.go
+  - internal/validators/RFC3339Validator.go
+  - internal/validators/boolvalidators/not_null.go
+  - internal/validators/float64validators/not_null.go
+  - internal/validators/int64validators/not_null.go
+  - internal/validators/listvalidators/not_null.go
+  - internal/validators/mapvalidators/not_null.go
+  - internal/validators/numbervalidators/not_null.go
+  - internal/validators/objectvalidators/not_null.go
+  - internal/validators/setvalidators/not_null.go
+  - internal/validators/stringvalidators/not_null.go
+  - main.go
+  - terraform-registry-manifest.json
+  - tools/tools.go
+examples:
+  instanceTypes:
+    speakeasy-default-instance-types:
+      responses:
+        "200":
+          application/json: {"data": {"gpu_1x_a100": {"instance_type": {"name": "gpu_1x_a100", "description": "1x RTX A100 (24 GB)", "gpu_description": "RTX A100 (24 GB)", "price_cents_per_hour": 110, "specs": {"vcpus": 24, "memory_gib": 800, "storage_gib": 512, "gpus": 4}}, "regions_with_capacity_available": [{"name": "us-tx-1", "description": "Austin, Texas"}]}, "gpu_4x_a6000": {"instance_type": {"name": "gpu_1x_a100", "description": "1x RTX A100 (24 GB)", "gpu_description": "RTX A100 (24 GB)", "price_cents_per_hour": 110, "specs": {"vcpus": 24, "memory_gib": 800, "storage_gib": 512, "gpus": 4}}, "regions_with_capacity_available": [{"name": "us-tx-1", "description": "Austin, Texas"}]}}}
+        "401":
+          application/json: {"error": {"code": "global/quota-exceeded", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}, "field_errors": {"key": {"code": "instance-operations/launch/insufficient-capacity", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}, "key1": {"code": "instance-operations/launch/insufficient-capacity", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}}}
+  listInstances:
+    speakeasy-default-list-instances:
+      responses:
+        "200":
+          application/json: {"data": [{"id": "0920582c7ff041399e34823a0be62549", "name": "training-node-1", "ip": "198.51.100.2", "private_ip": "10.0.2.100", "status": "unhealthy", "ssh_key_names": ["macbook-pro"], "file_system_names": ["shared-fs"], "region": {"name": "us-tx-1", "description": "Austin, Texas"}, "instance_type": {"name": "gpu_1x_a100", "description": "1x RTX A100 (24 GB)", "gpu_description": "RTX A100 (24 GB)", "price_cents_per_hour": 110, "specs": {"vcpus": 24, "memory_gib": 800, "storage_gib": 512, "gpus": 4}}, "hostname": "10-0-8-196.cloud.lambdalabs.com", "jupyter_token": "53968f128c4a4489b688c2c0a181d083", "jupyter_url": "https://jupyter-3ac4c5c6-9026-47d2-9a33-71efccbcd0ee.lambdaspaces.com/?token=53968f128c4a4489b688c2c0a181d083"}]}
+        "401":
+          application/json: {"error": {"code": "global/invalid-parameters", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}, "field_errors": {}}
+  getInstance:
+    speakeasy-default-get-instance:
+      parameters:
+        path:
+          id: "0920582c7ff041399e34823a0be62549"
+      responses:
+        "200":
+          application/json: {"data": {"id": "0920582c7ff041399e34823a0be62549", "name": "training-node-1", "ip": "198.51.100.2", "private_ip": "10.0.2.100", "status": "terminated", "ssh_key_names": ["macbook-pro"], "file_system_names": ["shared-fs"], "region": {"name": "us-tx-1", "description": "Austin, Texas"}, "instance_type": {"name": "gpu_1x_a100", "description": "1x RTX A100 (24 GB)", "gpu_description": "RTX A100 (24 GB)", "price_cents_per_hour": 110, "specs": {"vcpus": 24, "memory_gib": 800, "storage_gib": 512, "gpus": 4}}, "hostname": "10-0-8-196.cloud.lambdalabs.com", "jupyter_token": "53968f128c4a4489b688c2c0a181d083", "jupyter_url": "https://jupyter-3ac4c5c6-9026-47d2-9a33-71efccbcd0ee.lambdaspaces.com/?token=53968f128c4a4489b688c2c0a181d083"}}
+        "401":
+          application/json: {"error": {"code": "global/invalid-api-key", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}, "field_errors": {}}
+  launchInstance:
+    speakeasy-default-launch-instance:
+      requestBody:
+        application/json: {"region_name": "us-tx-1", "instance_type_name": "gpu_1x_a100", "ssh_key_names": ["macbook-pro"], "file_system_names": ["shared-fs"], "name": "training-node-1"}
+      responses:
+        "200":
+          application/json: {"data": {"instance_ids": ["0920582c7ff041399e34823a0be62549"]}}
+        "400":
+          application/json: {"error": {"code": "global/object-does-not-exist", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}, "field_errors": {"key": {"code": "instance-operations/launch/file-system-in-wrong-region", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}, "key1": {"code": "global/object-does-not-exist", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}}}
+  terminateInstance:
+    speakeasy-default-terminate-instance:
+      requestBody:
+        application/json: {"instance_ids": ["0920582c7ff041399e34823a0be62549"]}
+      responses:
+        "200":
+          application/json: {"data": {"terminated_instances": [{"id": "0920582c7ff041399e34823a0be62549", "name": "training-node-1", "ip": "198.51.100.2", "private_ip": "10.0.2.100", "status": "active", "ssh_key_names": ["macbook-pro"], "file_system_names": ["shared-fs"], "region": {"name": "us-tx-1", "description": "Austin, Texas"}, "instance_type": {"name": "gpu_1x_a100", "description": "1x RTX A100 (24 GB)", "gpu_description": "RTX A100 (24 GB)", "price_cents_per_hour": 110, "specs": {"vcpus": 24, "memory_gib": 800, "storage_gib": 512, "gpus": 4}}, "hostname": "10-0-8-196.cloud.lambdalabs.com", "jupyter_token": "53968f128c4a4489b688c2c0a181d083", "jupyter_url": "https://jupyter-3ac4c5c6-9026-47d2-9a33-71efccbcd0ee.lambdaspaces.com/?token=53968f128c4a4489b688c2c0a181d083"}, {"id": "0920582c7ff041399e34823a0be62549", "name": "training-node-1", "ip": "198.51.100.2", "private_ip": "10.0.2.100", "status": "terminated", "ssh_key_names": ["macbook-pro"], "file_system_names": ["shared-fs"], "region": {"name": "us-tx-1", "description": "Austin, Texas"}, "instance_type": {"name": "gpu_1x_a100", "description": "1x RTX A100 (24 GB)", "gpu_description": "RTX A100 (24 GB)", "price_cents_per_hour": 110, "specs": {"vcpus": 24, "memory_gib": 800, "storage_gib": 512, "gpus": 4}}, "hostname": "10-0-8-196.cloud.lambdalabs.com", "jupyter_token": "53968f128c4a4489b688c2c0a181d083", "jupyter_url": "https://jupyter-3ac4c5c6-9026-47d2-9a33-71efccbcd0ee.lambdaspaces.com/?token=53968f128c4a4489b688c2c0a181d083"}]}}
+        "400":
+          application/json: {"error": {"code": "global/invalid-api-key", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}, "field_errors": {}}
+  restartInstance:
+    speakeasy-default-restart-instance:
+      requestBody:
+        application/json: {"instance_ids": ["0920582c7ff041399e34823a0be62549"]}
+      responses:
+        "200":
+          application/json: {"data": {"restarted_instances": [{"id": "0920582c7ff041399e34823a0be62549", "name": "training-node-1", "ip": "198.51.100.2", "private_ip": "10.0.2.100", "status": "terminated", "ssh_key_names": ["macbook-pro"], "file_system_names": ["shared-fs"], "region": {"name": "us-tx-1", "description": "Austin, Texas"}, "instance_type": {"name": "gpu_1x_a100", "description": "1x RTX A100 (24 GB)", "gpu_description": "RTX A100 (24 GB)", "price_cents_per_hour": 110, "specs": {"vcpus": 24, "memory_gib": 800, "storage_gib": 512, "gpus": 4}}, "hostname": "10-0-8-196.cloud.lambdalabs.com", "jupyter_token": "53968f128c4a4489b688c2c0a181d083", "jupyter_url": "https://jupyter-3ac4c5c6-9026-47d2-9a33-71efccbcd0ee.lambdaspaces.com/?token=53968f128c4a4489b688c2c0a181d083"}]}}
+        "400":
+          application/json: {"error": {"code": "global/invalid-address", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}, "field_errors": {"key": {"code": "global/invalid-address", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}, "key1": {"code": "ssh-keys/key-in-use", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}, "key2": {"code": "global/account-inactive", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}}}
+  listSSHKeys:
+    speakeasy-default-list-SSH-keys:
+      responses:
+        "200":
+          application/json: {"data": [{"id": "0920582c7ff041399e34823a0be62548", "name": "macbook-pro", "public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDfKpav4ILY54InZe27G user", "private_key": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEA5IGybv8/wdQM6Y4yYTGiEem4TscBZiAW+9xyW2pDt8S7VDtm\n...\neCW4938W9u8N3R/kpGwi1tZYiGMLBU4Ks0qKFi/VeEaE9OLeP5WQ8Pk=\n-----END RSA PRIVATE KEY-----\n"}, {"id": "0920582c7ff041399e34823a0be62548", "name": "macbook-pro", "public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDfKpav4ILY54InZe27G user", "private_key": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEA5IGybv8/wdQM6Y4yYTGiEem4TscBZiAW+9xyW2pDt8S7VDtm\n...\neCW4938W9u8N3R/kpGwi1tZYiGMLBU4Ks0qKFi/VeEaE9OLeP5WQ8Pk=\n-----END RSA PRIVATE KEY-----\n"}]}
+        "401":
+          application/json: {"error": {"code": "global/object-does-not-exist", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}, "field_errors": {}}
+  addSSHKey:
+    speakeasy-default-add-SSH-key:
+      requestBody:
+        application/json: {"name": "macbook-pro", "public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDfKpav4ILY54InZe27G user"}
+      responses:
+        "200":
+          application/json: {"data": {"id": "0920582c7ff041399e34823a0be62548", "name": "macbook-pro", "public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDfKpav4ILY54InZe27G user", "private_key": "-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEA5IGybv8/wdQM6Y4yYTGiEem4TscBZiAW+9xyW2pDt8S7VDtm\n...\neCW4938W9u8N3R/kpGwi1tZYiGMLBU4Ks0qKFi/VeEaE9OLeP5WQ8Pk=\n-----END RSA PRIVATE KEY-----\n"}}
+        "400":
+          application/json: {"error": {"code": "global/unknown", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}, "field_errors": {"key": {"code": "global/invalid-address", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}, "key1": {"code": "global/object-does-not-exist", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}, "key2": {"code": "global/invalid-parameters", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}}}
+  deleteSSHKey:
+    speakeasy-default-delete-SSH-key:
+      parameters:
+        path:
+          id: "0920582c7ff041399e34823a0be62548"
+      responses:
+        "400":
+          application/json: {"error": {"code": "ssh-keys/key-in-use", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}, "field_errors": {"key": {"code": "instance-operations/launch/insufficient-capacity", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}, "key1": {"code": "global/invalid-address", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}}}
+  listFileSystems:
+    speakeasy-default-list-file-systems:
+      responses:
+        "200":
+          application/json: {"data": [{"id": "0920582c7ff041399e34823a0be62547", "name": "shared-fs", "created": "2023-02-24T20:48:56+00:00", "created_by": {"id": "0920582c7ff041399e34823a0be62549", "email": "teammate@example.com", "status": "deactivated"}, "mount_point": "/home/ubuntu/shared-fs", "region": {"name": "us-tx-1", "description": "Austin, Texas"}, "is_in_use": false, "bytes_used": 2147483648}]}
+        "401":
+          application/json: {"error": {"code": "instance-operations/launch/file-system-in-wrong-region", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}, "field_errors": {"key": {"code": "global/quota-exceeded", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}, "key1": {"code": "global/invalid-parameters", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}, "key2": {"code": "global/quota-exceeded", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}}}
