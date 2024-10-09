@@ -14,7 +14,6 @@ func (o *LaunchData) GetInstanceIds() []string {
 	return o.InstanceIds
 }
 
-// ResponseLaunch - OK
 type ResponseLaunch struct {
 	Data LaunchData `json:"data"`
 }

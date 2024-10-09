@@ -2,7 +2,6 @@
 
 package shared
 
-// Instances - OK
 type Instances struct {
 	Data []Instance `json:"data"`
 }

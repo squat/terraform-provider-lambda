@@ -14,7 +14,6 @@ func (o *TerminateData) GetTerminatedInstances() []Instance {
 	return o.TerminatedInstances
 }
 
-// ResponseTerminate - OK
 type ResponseTerminate struct {
 	Data TerminateData `json:"data"`
 }

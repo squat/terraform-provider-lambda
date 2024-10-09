@@ -2,7 +2,6 @@
 
 package shared
 
-// FileSystems - OK
 type FileSystems struct {
 	Data []FileSystem `json:"data"`
 }

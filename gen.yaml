@@ -20,11 +20,13 @@ features:
     globalSecurity: 2.81.1
     globalServerURLs: 2.82.0
 terraform:
-  version: 0.1.2
+  version: 0.1.1
   additionalDataSources: []
   additionalDependencies: {}
   additionalResources: []
   allowUnknownFieldsInWeakUnions: false
   author: squat
-  environmentVariables: []
+  environmentVariables:
+    - env: LAMBDA_API_KEY
+      providerAttribute: bearer_auth
   packageName: lambda

@@ -2,7 +2,6 @@
 
 package shared
 
-// ResponseInstance - OK
 type ResponseInstance struct {
 	// Virtual machine (VM) in Lambda Cloud
 	Data Instance `json:"data"`

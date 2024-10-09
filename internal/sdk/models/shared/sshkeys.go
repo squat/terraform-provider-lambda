@@ -2,7 +2,6 @@
 
 package shared
 
-// SSHKeys - OK
 type SSHKeys struct {
 	Data []SSHKey `json:"data"`
 }

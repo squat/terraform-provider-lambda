@@ -23,7 +23,6 @@ func (o *Data) GetRegionsWithCapacityAvailable() []Region {
 	return o.RegionsWithCapacityAvailable
 }
 
-// InstanceTypes - OK
 type InstanceTypes struct {
 	// Dict of instance_type_name to instance_type and region availability.
 	Data map[string]Data `json:"data"`

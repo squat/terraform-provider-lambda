@@ -2,7 +2,6 @@
 
 package shared
 
-// ErrorResponseBody - Unauthorized.
 type ErrorResponseBody struct {
 	Error Error `json:"error"`
 	// Details about errors on a per-parameter basis

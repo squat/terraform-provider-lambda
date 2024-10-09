@@ -14,7 +14,6 @@ func (o *RestartData) GetRestartedInstances() []Instance {
 	return o.RestartedInstances
 }
 
-// ResponseRestart - OK
 type ResponseRestart struct {
 	Data RestartData `json:"data"`
 }
