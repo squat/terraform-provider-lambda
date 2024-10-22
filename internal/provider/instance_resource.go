@@ -10,6 +10,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
@@ -64,16 +67,25 @@ func (r *InstanceResource) Schema(ctx context.Context, req resource.SchemaReques
 			"region_name": schema.StringAttribute{
 				Required:    true,
 				Description: `Short name of the reguin in which to laucn the instance.`,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
 			},
 			"instance_type_name": schema.StringAttribute{
 				Required:    true,
 				Description: `Name of an instance type.`,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
 			},
 			"file_system_names": schema.ListAttribute{
 				Computed:    true,
 				Optional:    true,
 				ElementType: types.StringType,
 				Description: `Names of the file systems, if any, attached to the instance`,
+				PlanModifiers: []planmodifier.List{
+					listplanmodifier.RequiresReplace(),
+				},
 			},
 			"hostname": schema.StringAttribute{
 				Computed:    true,
@@ -168,6 +180,9 @@ func (r *InstanceResource) Schema(ctx context.Context, req resource.SchemaReques
 				Required:    true,
 				ElementType: types.StringType,
 				Description: `Names of the SSH keys allowed to access the instance`,
+				PlanModifiers: []planmodifier.List{
+					listplanmodifier.RequiresReplace(),
+				},
 			},
 			"status": schema.StringAttribute{
 				Computed:    true,
@@ -310,6 +325,11 @@ func (r *InstanceResource) getInstance(ctx context.Context, state *tfsdk.State, 
 		diag.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
 		return nil
 	}
+	if res.Instance.Data.Status == shared.StatusTerminated || res.Instance.Data.Status == shared.StatusTerminating {
+		state.RemoveResource(ctx)
+		return nil
+	}
+
 	return &res.Instance.Data
 }
 
@@ -354,6 +374,34 @@ func (r *InstanceResource) Update(ctx context.Context, req resource.UpdateReques
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	request := *data.ToSharedUpdate()
+	res, err := r.client.UpdateInstance(ctx, request)
+	if err != nil {
+		resp.Diagnostics.AddError("failure to invoke API", err.Error())
+		if res != nil && res.RawResponse != nil {
+			resp.Diagnostics.AddError("unexpected http request/response", debugResponse(res.RawResponse))
+		}
+		return
+	}
+	if res == nil {
+		resp.Diagnostics.AddError("unexpected response from API", fmt.Sprintf("%v", res))
+		return
+	}
+	if res.StatusCode != 200 {
+		resp.Diagnostics.AddError(fmt.Sprintf("unexpected response from API. Got an unexpected response code %v", res.StatusCode), debugResponse(res.RawResponse))
+		return
+	}
+	if !(res.Instance != nil) {
+		resp.Diagnostics.AddError("unexpected response from API. Got an unexpected response body", debugResponse(res.RawResponse))
+		return
+	}
+
+	data.RefreshFromSharedInstance(&res.Instance.Data)
+	refreshPlan(ctx, plan, &data, resp.Diagnostics)
+
+	// Save updated data into Terraform state
+	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 
 	// Not Implemented; all attributes marked as RequiresReplace
 

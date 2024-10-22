@@ -40,3 +40,32 @@ actions:
   - target: $["paths"]["/ssh-keys/{id}"]["delete"]
     update:
       x-speakeasy-entity-operation: SSHKey#delete
+  - target: $["paths"]["/instances"]
+    update:
+      post:
+        summary: "Update instance"
+        description: "Updates the instance matching the given ID"
+        operationId: "updateInstance"
+        requestBody: {"$ref": "#/components/requestBodies/update"}
+        responses:
+          "200": {"$ref": "#/components/responses/instance"}
+          "401": {"$ref": "#/components/responses/unauthorized"}
+          "403": {"$ref": "#/components/responses/forbidden"}
+          "400": {"$ref": "#/components/responses/badRequest"}
+          "404": {"$ref": "#/components/responses/notFound"}
+          "500": {"$ref": "#/components/responses/internalServerError"}
+  - target: $["components"]["requestBodies"]
+    update:
+      "update":
+        required: true
+        content:
+          "application/json":
+            schema:
+              type: "object"
+              required:
+                - "id"
+                - "name"
+              additionalProperties: false
+              properties:
+                "id": {"$ref": "#/components/schemas/instanceId"}
+                "name": {"$ref": "#/components/schemas/instanceName"}
