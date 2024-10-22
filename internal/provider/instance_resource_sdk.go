@@ -34,6 +34,22 @@ func (r *InstanceResourceModel) ToSharedLaunch() *shared.Launch {
 	return &out
 }
 
+func (r *InstanceResourceModel) ToSharedUpdate() *shared.Update {
+	name := new(string)
+	if !r.Name.IsUnknown() && !r.Name.IsNull() {
+		*name = r.Name.ValueString()
+	} else {
+		name = nil
+	}
+
+	out := shared.Update{
+		ID:   r.ID.ValueString(),
+		Name: name,
+	}
+
+	return &out
+}
+
 func (r *InstanceResourceModel) RefreshFromSharedInstance(resp *shared.Instance) {
 	r.FileSystemNames = []types.String{}
 	for _, v := range resp.FileSystemNames {

@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: fa60d959-ce8b-4feb-9655-a9c9a712f701
 management:
-  docChecksum: f9513ec36339ee18aec3c73a66207a81
+  docChecksum: 818f520fd95d35cde450c4a44ded90ab
   docVersion: 1.5.3
   speakeasyVersion: 1.402.0
   generationVersion: 2.422.6
-  releaseVersion: 0.1.2
-  configChecksum: 5aff245fa2086385c0511c4d74057f82
+  releaseVersion: 0.1.3
+  configChecksum: ec119bf1432572d39c824e9c4d0891ed
 features:
   terraform:
     additionalDependencies: 0.1.0
@@ -90,6 +90,7 @@ generatedFiles:
   - internal/sdk/models/operations/options.go
   - internal/sdk/models/operations/restartinstance.go
   - internal/sdk/models/operations/terminateinstance.go
+  - internal/sdk/models/operations/updateinstance.go
   - internal/sdk/models/shared/addsshkey.go
   - internal/sdk/models/shared/error.go
   - internal/sdk/models/shared/errorcode.go
@@ -112,6 +113,7 @@ generatedFiles:
   - internal/sdk/models/shared/sshkey.go
   - internal/sdk/models/shared/sshkeys.go
   - internal/sdk/models/shared/terminate.go
+  - internal/sdk/models/shared/update.go
   - internal/sdk/models/shared/user.go
   - internal/sdk/retry/config.go
   - internal/sdk/types/bigint.go
@@ -218,3 +220,12 @@ examples:
           application/json: {"data": [{"id": "0920582c7ff041399e34823a0be62547", "name": "shared-fs", "created": "2023-02-24T20:48:56+00:00", "created_by": {"id": "0920582c7ff041399e34823a0be62549", "email": "teammate@example.com", "status": "deactivated"}, "mount_point": "/home/ubuntu/shared-fs", "region": {"name": "us-tx-1", "description": "Austin, Texas"}, "is_in_use": false, "bytes_used": 2147483648}]}
         "401":
           application/json: {"error": {"code": "instance-operations/launch/file-system-in-wrong-region", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}, "field_errors": {"key": {"code": "global/quota-exceeded", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}, "key1": {"code": "global/invalid-parameters", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}, "key2": {"code": "global/quota-exceeded", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}}}
+  updateInstance:
+    speakeasy-default-update-instance:
+      requestBody:
+        application/json: {"id": "0920582c7ff041399e34823a0be62549", "name": "training-node-1"}
+      responses:
+        "200":
+          application/json: {"data": {"id": "0920582c7ff041399e34823a0be62549", "name": "training-node-1", "ip": "198.51.100.2", "private_ip": "10.0.2.100", "status": "unhealthy", "ssh_key_names": ["macbook-pro"], "file_system_names": ["shared-fs"], "region": {"name": "us-tx-1", "description": "Austin, Texas"}, "instance_type": {"name": "gpu_1x_a100", "description": "1x RTX A100 (24 GB)", "gpu_description": "RTX A100 (24 GB)", "price_cents_per_hour": 110, "specs": {"vcpus": 24, "memory_gib": 800, "storage_gib": 512, "gpus": 4}}, "hostname": "10-0-8-196.cloud.lambdalabs.com", "jupyter_token": "53968f128c4a4489b688c2c0a181d083", "jupyter_url": "https://jupyter-3ac4c5c6-9026-47d2-9a33-71efccbcd0ee.lambdaspaces.com/?token=53968f128c4a4489b688c2c0a181d083"}}
+        "400":
+          application/json: {"error": {"code": "global/account-inactive", "message": "API key is invalid, expired, or deleted.", "suggestion": "Create a new API key and try again."}, "field_errors": {}}
